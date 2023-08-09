@@ -178,6 +178,7 @@ def add_ward(df):
     parcels = parcels.sort_values("Ward_GIS").drop_duplicates("IAS_PARCEL_ID")
     merge = parcels.merge(df, right_on="PARCELNUMBER", left_on="IAS_PARCEL_ID", how="right")
     merge = merge.rename(columns={"Ward_GIS": "WARD"})
+    merge["WARD_str"] = merge["WARD"].apply(lambda x: f"{x:.0f}")
     return merge
 
 def add_ward_geo(df):
@@ -193,6 +194,7 @@ def add_ward_geo(df):
     parcels = parcels.sort_values("Ward_GIS").drop_duplicates("IAS_PARCEL_ID")
     merge = parcels.merge(df, right_on="PARCELNUMBER", left_on="IAS_PARCEL_ID", how="right")
     merge = merge.rename(columns={"Ward_GIS": "WARD"})
+    merge["WARD_str"] = merge["WARD"].apply(lambda x: f"{x:.0f}")
     return merge
 
 
