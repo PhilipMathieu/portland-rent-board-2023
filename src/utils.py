@@ -121,6 +121,10 @@ def add_outlier_2022(df, stats=False):
         df = add_increases(df)
     N = df.shape[0]
 
+    # count $0 rents
+    df["outlier_0_rent"] = df["CurrentRent1"] == 0
+    N_0_rent = df["outlier_0_rent"].sum()
+
     # drop unrealistically low and high rents
     df["outlier_rent"] = (df["CurrentRent1"] <= 100) | (df["CurrentRent1"] >= 6500)
     N_rent = df["outlier_rent"].sum()
@@ -136,10 +140,11 @@ def add_outlier_2022(df, stats=False):
     
     if stats:
         print(f"Breakdown by Outlier Condition:")
-        print(f"\tOutlier Rents: {N_rent} ({N_rent/ N * 100:2.0f}%)")
-        print(f"\tOutlier Increase vs Base: {N_inc_base} ({N_inc_base / N * 100:2.0f}%)")
-        print(f"\tOutlier Increase vs Previous: {N_inc_prev} ({N_inc_prev / N * 100:2.0f}%)")
-        print(f"\tOverall: {N_outliers} ({N_outliers / N * 100:2.0f}%)")
+        print(f"\tOutlier Rents ($0): {N_0_rent} ({N_0_rent/ N_outliers * 100:2.0f}%)")
+        print(f"\tOutlier Rents (other): {N_rent - N_0_rent} ({(N_rent - N_0_rent)/ N_outliers * 100:2.0f}%)")
+        print(f"\tOutlier Increase vs Base: {N_inc_base} ({N_inc_base / N_outliers * 100:2.0f}%)")
+        print(f"\tOutlier Increase vs Previous: {N_inc_prev} ({N_inc_prev / N_outliers * 100:2.0f}%)")
+        print(f"\tOverall: {N_outliers} ({N_outliers / N_outliers* 100:2.0f}%)")
 
     return df
 
