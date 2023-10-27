@@ -110,10 +110,11 @@ def group_bedrooms(df):
     # units with 0 bedrooms are counted as 1, and units with 5+ bedrooms are counted as 5
     # return type is str so that "5+" can be used as a category
     df["nbrBedRms_studio"] = df["nbrBedRms1"].replace(0, 1)
-    df["nbrBedRms_grouped"] = df["nbrBedRms1"].replace(0, 1)
+    df["nbrBedRms_grouped"] = df["nbrBedRms1"]
     df["nbrBedRms_grouped"] = df["nbrBedRms_grouped"].where(df["nbrBedRms_grouped"] < 5, 5)
     df["nbrBedRms_grouped"] = df["nbrBedRms_grouped"].astype(str)
     df["nbrBedRms_grouped"] = df["nbrBedRms_grouped"].replace("5", "5+")
+    df["nbrBedRms_grouped"] = df["nbrBedRms_grouped"].replace("0", " Studio")
     return df
 
 def add_outlier_2022(df, stats=False):
